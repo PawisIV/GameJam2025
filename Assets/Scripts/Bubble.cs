@@ -22,10 +22,14 @@ public class Bubble : MonoBehaviour
     {
         Destroy(gameObject, 3f);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Handle collision logic
-        Debug.Log($"Bubble hit {collision.gameObject.name} with {damage} damage.");
-        Destroy(gameObject);
+        if (other.gameObject.CompareTag("Enemy"))
+        { 
+            HealthComponent health = other.GetComponent<HealthComponent>();
+            health.TakeDamage(damage);
+            Debug.Log($"Bubble hit {other.gameObject.name} with {damage} damage.");
+            Destroy(gameObject);
+        }
     }
 }

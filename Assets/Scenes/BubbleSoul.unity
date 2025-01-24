@@ -247,7 +247,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.06, y: -4.48, z: 0}
-  m_LocalScale: {x: 19.410078, y: 1, z: 1}
+  m_LocalScale: {x: 19.410078, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -502,8 +502,8 @@ Transform:
   m_GameObject: {fileID: 710704995}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: -1.97, z: 0}
-  m_LocalScale: {x: 1.40537, y: 1.2265599, z: 0.25754}
+  m_LocalPosition: {x: -6.76, y: -2.3503, z: 0}
+  m_LocalScale: {x: 3.467329, y: 3.0261686, z: 0.6354027}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -709,11 +709,12 @@ Transform:
   m_GameObject: {fileID: 1731542774}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.37, y: -2.3417, z: 0}
+  m_LocalPosition: {x: -0.82, y: -2.3417, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 574064087}
+  - {fileID: 2067104001}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1731542779
@@ -754,17 +755,23 @@ MonoBehaviour:
   rechargeTimePerGauge: 0.5
   bubbleStats:
   - damage: 1
-    speed: 8
+    speed: 1.5
     size: 0.1
   - damage: 2.5
-    speed: 7
+    speed: 1.25
     size: 0.25
   - damage: 5
-    speed: 6
+    speed: 1
     size: 0.5
   - damage: 10
-    speed: 5
+    speed: 0.65
     size: 1
+  smallBubbleSprite: {fileID: 21300000, guid: a48030e87cc43c64a962cf2757aa6b5a, type: 3}
+  mediumBubbleSprite: {fileID: 21300000, guid: 53408cbaa9b63734d8ac1448a6801163, type: 3}
+  largeBubbleSprite: {fileID: 21300000, guid: 4c4fe0493b1d5e744ad71175e05086da, type: 3}
+  bubbleSpawnPoint: {fileID: 2067104001}
+  spawnOffset: {x: 0, y: 0}
+  facingRight: 1
 --- !u!95 &1731542781
 Animator:
   serializedVersion: 5
@@ -786,6 +793,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &2067104000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2067104001}
+  m_Layer: 0
+  m_Name: bubbleSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2067104001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067104000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.301, y: 0.195, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1731542778}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

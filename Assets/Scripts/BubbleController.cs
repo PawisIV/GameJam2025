@@ -192,6 +192,7 @@ public class BubbleWobble : MonoBehaviour
         speed = bubbleSpeed;
         facingRight = isFacingRight;
         startPosition = transform.position;
+        tag = "Bubble";
     }
 
     private void Update()

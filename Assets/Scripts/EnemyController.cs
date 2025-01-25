@@ -66,14 +66,14 @@ public class EnemyController : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
 
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = Vector2.right * bulletSpeed; // Adjust direction as needed
-            }
+            //Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            //if (rb != null)
+            //{
+            //    rb.velocity = Vector2.right * bulletSpeed; // Adjust direction as needed
+            //}
 
-            // Optional: Destroy the bullet after a certain time to avoid clutter
-            Destroy(bullet, 5f);
+            //// Optional: Destroy the bullet after a certain time to avoid clutter
+            //Destroy(bullet, 5f);
 
             animator.SetTrigger("Attack"); // Play attack animation
         }

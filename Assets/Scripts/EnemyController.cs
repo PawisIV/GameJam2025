@@ -18,8 +18,11 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; // Assumes the player has the "Player" tag
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>(); 
+
+
     }
+
 
     private void Update()
     {
@@ -87,8 +90,13 @@ public class EnemyController : MonoBehaviour
 
     private void HandleDeathState()
     {
+
         animator.SetTrigger("Death");
-        Destroy(gameObject, 2f); // Destroy the enemy after 2 seconds
+        Debug.Log("Boss is dead!");
+
+        // Stop the timer
+
+        Destroy(gameObject, 2f); // Destroy the boss after 2 seconds
     }
 
     // Optional: Add a debug visual for the attack range
@@ -97,4 +105,5 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+
 }

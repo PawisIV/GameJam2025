@@ -61,7 +61,7 @@ public class HealthComponent : MonoBehaviour
         }
 
         // Add a delay before destroying the boss
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
 
         Destroy(gameObject);
     }

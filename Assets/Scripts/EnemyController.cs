@@ -1,27 +1,26 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
     public enum EnemyState { Idle, Attack, Death }
 
     [Header("Enemy Settings")]
-    public float attackRange = 2f;
-    public float attackCooldown = 1.5f;
-    public float moveSpeed = 2f;
+    public float attackCooldown = 1.5f; // Cooldown between attacks
+    public GameObject bulletPrefab; // Prefab for the bullet
+    public Transform bulletSpawnPoint; // Where bullets are spawned
+    public float bulletSpeed = 5f; // Speed of the spawned bullets
 
-    private float currentHealth;
+    private float currentHealth = 100f;
     private EnemyState currentState = EnemyState.Idle;
-    private Transform player;
     private Animator animator;
     private float attackCooldownTimer = 0f;
 
     private void Start()
     {
-        animator = GetComponent<Animator>(); 
-
-
+        animator = GetComponent<Animator>();
+        ChangeState(EnemyState.Idle);
     }
-
 
     private void Update()
     {
@@ -37,26 +36,18 @@ public class EnemyController : MonoBehaviour
                 break;
         }
 
+        attackCooldownTimer -= Time.deltaTime;
+
         if (currentHealth <= 0)
         {
             ChangeState(EnemyState.Death);
         }
-
-        attackCooldownTimer -= Time.deltaTime;
     }
 
     private void HandleIdleState()
     {
-        // Look at the player
-        Vector3 direction = (player.position - transform.position).normalized;
-        transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1); // Flip sprite to face player
-
-        // Move towards the player if outside attack range
-        if (Vector3.Distance(transform.position, player.position) > attackRange)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-        }
-        else
+        // Transition to attack state when cooldown is over
+        if (attackCooldownTimer <= 0)
         {
             ChangeState(EnemyState.Attack);
         }
@@ -64,14 +55,28 @@ public class EnemyController : MonoBehaviour
 
     private void HandleAttackState()
     {
-        if (attackCooldownTimer <= 0)
-        {
-            animator.SetTrigger("Attack");
-            attackCooldownTimer = attackCooldown; // Reset cooldown
-        }
+        PerformAttack();
+        attackCooldownTimer = attackCooldown; // Reset cooldown
+        ChangeState(EnemyState.Idle); // Return to Idle after attacking
+    }
 
-        // Return to idle after attacking
-        ChangeState(EnemyState.Idle);
+    private void PerformAttack()
+    {
+        if (bulletPrefab != null && bulletSpawnPoint != null)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.right * bulletSpeed; // Adjust direction as needed
+            }
+
+            // Optional: Destroy the bullet after a certain time to avoid clutter
+            Destroy(bullet, 5f);
+
+            animator.SetTrigger("Attack"); // Play attack animation
+        }
     }
 
     private void ChangeState(EnemyState newState)
@@ -89,31 +94,24 @@ public class EnemyController : MonoBehaviour
 
     private void HandleDeathState()
     {
-
         animator.SetTrigger("Death");
         Debug.Log("Boss is dead!");
-
-        // Stop the timer
-
         Destroy(gameObject, 2f); // Destroy the boss after 2 seconds
     }
 
-    // Optional: Add a debug visual for the attack range
-    private void OnDrawGizmosSelected()
+    public void TakeDamage(float damage)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player1"))
-        {
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(1); // Deal 1 damage to the player
-            }
-        }
+        currentHealth -= damage;
+        Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        // Visualize the bullet spawn point in the editor
+        if (bulletSpawnPoint != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(bulletSpawnPoint.position, 0.1f);
+        }
+    }
 }

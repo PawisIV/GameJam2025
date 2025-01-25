@@ -50,8 +50,6 @@ public class HealthComponent : MonoBehaviour
 
     private IEnumerator HandleDeath()
     {
-        Debug.Log("Boss is dead!");
-
         // Stop the timer
         if (timer != null)
         {

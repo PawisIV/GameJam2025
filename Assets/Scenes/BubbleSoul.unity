@@ -506,7 +506,8 @@ Transform:
   m_LocalPosition: {x: -0.07, y: -2.84, z: 0}
   m_LocalScale: {x: 4.009398, y: 3.4992683, z: 0.7347392}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 912469947}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -2.597}
 --- !u!50 &710704999
@@ -565,9 +566,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af51d68d1e1ff6648b4e76cede794bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 2
   attackCooldown: 1.5
-  moveSpeed: 2
+  bulletPrefab: {fileID: 0}
+  bulletSpawnPoint: {fileID: 912469947}
+  bulletSpeed: 5
 --- !u!95 &710705002
 Animator:
   serializedVersion: 5
@@ -677,6 +679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalBubbleSprite: {fileID: -2094236115, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
   brokenBubbleSprite: {fileID: -114715849, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
+  chargingBubbleSprite: {fileID: 21300000, guid: 2d674acc1626e344f81588ac3622d4ad, type: 3}
   rechargeAnimationSprites:
   - {fileID: -1344377747, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
   - {fileID: 1797837152, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
@@ -684,6 +687,7 @@ MonoBehaviour:
   - {fileID: -2094236115, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
   bubblePrefab: {fileID: 1984679244781107727, guid: e34d916d8729ab34e9b5ef707cc03702, type: 3}
   gaugeContainer: {fileID: 971196962}
+  rechargeAnimationSpeed: 0.1
 --- !u!114 &827490029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,6 +726,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 827490026}
   m_CullTransparentMesh: 1
+--- !u!1 &912469946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 912469947}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &912469947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912469946}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 710704998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &971196961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,8 +1349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  hpUI: {fileID: 0}
-  hpText: {fileID: 0}
+  healthContainer: {fileID: 0}
+  healthSpritePrefab: {fileID: 0}
 --- !u!1 &1800791573
 GameObject:
   m_ObjectHideFlags: 0

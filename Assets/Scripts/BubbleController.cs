@@ -9,6 +9,9 @@ public class BubbleController : MonoBehaviour
     public float rechargeTimePerGauge = 0.5f; // Time required to recharge one gauge
     public BubbleStats[] bubbleStats; // Array to store bubble stats for each charge level
 
+    [Header("UI References")]
+    public BubbleGaugeUI bubbleGaugeUI; // Reference to the UI manager for the gauge
+
     [Header("Bubble Sprites")]
     public Sprite smallBubbleSprite;
     public Sprite mediumBubbleSprite;
@@ -19,6 +22,7 @@ public class BubbleController : MonoBehaviour
     public Vector2 spawnOffset; // Offset from the spawn point
     public bool facingRight = true; // Track the player's facing direction
 
+    private bool isCharging = false;
     private int currentCharge = 1; // Start at 1
     private int currentGauge; // Current available gauge
     private float chargeTimer = 0f; // Timer to track charging progress
@@ -27,6 +31,8 @@ public class BubbleController : MonoBehaviour
     private void Start()
     {
         currentGauge = maxGauge; // Initialize current gauge to maximum
+        bubbleGaugeUI.InitializeGauge(maxGauge);
+        bubbleGaugeUI.UpdateGauge(currentGauge, maxGauge);
     }
 
     private void Update()
@@ -60,24 +66,25 @@ public class BubbleController : MonoBehaviour
 
     private void HandleBubbleCharge()
     {
-        if (Input.GetButton("Fire1")) // Start charging when Fire1 is held
+        if (Input.GetButton("Fire1"))
         {
             chargeTimer += Time.deltaTime;
-
+            isCharging = true;
             if (chargeTimer >= chargeTimePerGauge && currentCharge < maxCharge && currentCharge < currentGauge)
             {
                 currentCharge++;
-                chargeTimer = 0f; // Reset the timer
+                chargeTimer = 0f;
                 Debug.Log($"Charging: {currentCharge}");
             }
         }
 
-        if (Input.GetButtonUp("Fire1")) // Release to shoot the bubble
+        if (Input.GetButtonUp("Fire1"))
         {
             if (currentCharge <= currentGauge)
             {
                 ShootBubble(currentCharge);
-                currentGauge -= currentCharge; // Subtract current charge from the gauge
+                currentGauge -= currentCharge;
+                bubbleGaugeUI.UpdateGauge(currentGauge, maxGauge); // Update the UI
                 Debug.Log($"Bubble shot! Remaining Gauge: {currentGauge}");
             }
             else
@@ -85,19 +92,21 @@ public class BubbleController : MonoBehaviour
                 Debug.LogWarning("Not enough gauge to shoot!");
             }
 
-            currentCharge = 1; // Reset charge to 1
-            chargeTimer = 0f; // Reset the timer
+            isCharging=false;
+            currentCharge = 1;
+            chargeTimer = 0f;
         }
     }
 
     private void RechargeGauge()
     {
-        if (currentGauge < maxGauge) // Recharge only if not at max gauge
+        if (currentGauge < maxGauge && !isCharging) // Recharge only if not at max gauge
         {
             rechargeTimer += Time.deltaTime;
 
             if (rechargeTimer >= rechargeTimePerGauge)
             {
+                bubbleGaugeUI.AnimateBubbleRecharge(currentGauge); // Animate the recharging bubble
                 currentGauge++;
                 rechargeTimer = 0f; // Reset recharge timer
                 Debug.Log($"Gauge recharged: {currentGauge}/{maxGauge}");

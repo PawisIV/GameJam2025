@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,43 +10,87 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
 
     [Header("UI Settings")]
-    public GameObject healthContainer;       // Parent object for health sprites
-    public GameObject healthSpritePrefab;   // Prefab for a single health sprite (e.g., heart)
+    public RectTransform healthContainer; // Parent UI container for health sprites
+    public Sprite healthSprite;          // Sprite for a single health icon (e.g., heart)
+    public Vector2 spriteSize = new Vector2(50, 50); // Size of each sprite (in pixels)
+    public float spacing = 10f;          // Spacing between health sprites
 
-    private List<GameObject> healthSprites = new List<GameObject>();
+    [Header("Iframe Settings")]
+    public float iframeDuration = 1.0f;  // Duration of invincibility frames
+    public float blinkInterval = 0.1f;  // Interval for blinking effect
+    private bool isInvincible = false;  // To track iframe state
+
+    private List<Image> healthImages = new List<Image>();
+    private SpriteRenderer playerRenderer; // Reference to the player's SpriteRenderer or MeshRenderer
+    [SerializeField] private Timer timer;
 
     private void Start()
     {
         // Initialize player health
         currentHealth = maxHealth;
         InitializeHealthUI();
+
+        // Get the player's sprite renderer (for blinking effect)
+        playerRenderer = GetComponent<SpriteRenderer>();
+        if (playerRenderer == null)
+        {
+            Debug.LogError("No SpriteRenderer found on the player object!");
+        }
     }
 
     private void InitializeHealthUI()
     {
-        // Create the health sprites based on maxHealth
+        // Clear any existing health sprites (in case of reinitialization)
+        foreach (var image in healthImages)
+        {
+            Destroy(image.gameObject);
+        }
+        healthImages.Clear();
+
+        // Create health sprites based on maxHealth
         for (int i = 0; i < maxHealth; i++)
         {
-            GameObject healthSprite = Instantiate(healthSpritePrefab, healthContainer.transform);
-            healthSprites.Add(healthSprite);
+            CreateHealthSprite(i);
         }
+    }
+
+    private void CreateHealthSprite(int index)
+    {
+        // Create a new GameObject for the sprite
+        GameObject healthObject = new GameObject("HealthSprite_" + index, typeof(RectTransform));
+        healthObject.transform.SetParent(healthContainer, false);
+
+        // Set size and position of the sprite
+        RectTransform rectTransform = healthObject.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = spriteSize;
+        rectTransform.anchoredPosition = new Vector2(index * (spriteSize.x + spacing), 0);
+
+        // Add Image component and assign the health sprite
+        Image image = healthObject.AddComponent<Image>();
+        image.sprite = healthSprite;
+        healthImages.Add(image);
     }
 
     private void UpdateHealthUI()
     {
-        // Update health sprites visibility based on current health
-        for (int i = 0; i < healthSprites.Count; i++)
+        // Update the visibility of each health sprite
+        for (int i = 0; i < healthImages.Count; i++)
         {
-            healthSprites[i].SetActive(i < currentHealth);
+            healthImages[i].enabled = i < currentHealth;
         }
     }
 
     public void TakeDamage(int damage)
     {
+        if (isInvincible) return; // Prevent taking damage during iframe
+
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0); // Clamp to 0
 
         UpdateHealthUI();
+
+        // Trigger iframe and blinking effect
+        StartCoroutine(HandleIframes());
 
         // Handle player death
         if (currentHealth <= 0)
@@ -62,10 +107,37 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
+    private IEnumerator HandleIframes()
+    {
+        isInvincible = true;
+
+        // Blink the player during iframes
+        float elapsedTime = 0f;
+        while (elapsedTime < iframeDuration)
+        {
+            playerRenderer.enabled = !playerRenderer.enabled; // Toggle visibility
+            yield return new WaitForSeconds(blinkInterval);
+            elapsedTime += blinkInterval;
+        }
+
+        playerRenderer.enabled = true; // Ensure the player is visible at the end
+        isInvincible = false;
+    }
+
     private void HandleDeath()
     {
         Debug.Log("Player is dead!");
+
+        if (timer != null)
+        {
+            timer.StopTimer();
+        }
+        else
+        {
+            Debug.LogWarning("Timer reference is missing!");
+        }
         // Add any death logic here (respawn, game over screen, etc.)
         Destroy(gameObject); // Example: Destroy the player
     }
+
 }

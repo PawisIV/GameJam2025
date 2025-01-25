@@ -20,9 +20,9 @@ public class BulletEnemy : MonoBehaviour
             health.TakeDamage(damage);
             Destroy(gameObject);
         }
-        //if (other.gameObject.CompareTag("Bubble"))
-        //{
-        //    Destroy(other);
-        //}
+        if (other.gameObject.CompareTag("Bubble"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }

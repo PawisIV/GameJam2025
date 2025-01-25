@@ -10,10 +10,12 @@ public class HealthComponent : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer
     [SerializeField] private Color damageColor = Color.red; // Color to flash when damaged
     [SerializeField] private float colorFlashDuration = 0.2f; // Duration of the flash
+    private BossController bossController;
 
     private void Awake()
     {
         currentHealth = MaxHealth;
+        bossController = GetComponent<BossController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (spriteRenderer == null)
@@ -37,7 +39,8 @@ public class HealthComponent : MonoBehaviour
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
-            StartCoroutine(HandleDeath());
+            bossController.cooldownCoroutine = null;
+            bossController.ChangeState(BossController.BossState.Death);
         }
     }
 
@@ -46,23 +49,5 @@ public class HealthComponent : MonoBehaviour
         spriteRenderer.color = damageColor; // Change to damage color
         yield return new WaitForSeconds(colorFlashDuration);
         spriteRenderer.color = Color.white; // Reset to original color
-    }
-
-    private IEnumerator HandleDeath()
-    {
-        // Stop the timer
-        if (timer != null)
-        {
-            timer.StopTimer();
-        }
-        else
-        {
-            Debug.LogWarning("Timer reference is missing!");
-        }
-
-        // Add a delay before destroying the boss
-        yield return new WaitForSeconds(3f);
-
-        Destroy(gameObject);
     }
 }

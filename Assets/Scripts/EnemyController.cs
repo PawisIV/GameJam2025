@@ -1,66 +1,64 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class BossController : MonoBehaviour
 {
-    public enum EnemyState { Idle, Attack, Death }
+    public enum BossState { Idle, Attack, Death }
 
-    [Header("Enemy Settings")]
-    public float attackCooldown = 1.5f; // Cooldown between attacks
+    [Header("Boss Settings")]
+    public float attackCooldown = 2f; // Time between attacks
+
+    [Header("Bullet Settings")]
     public GameObject bulletPrefab; // Prefab for the bullet
-    public Transform bulletSpawnPoint; // Where bullets are spawned
-    public float bulletSpeed = 5f; // Speed of the spawned bullets
+    public Transform bulletSpawnPoint; // Point where bullets are spawned
+    public float bulletSpeed = 5f; // Speed of the bullets
 
-    private float currentHealth = 100f;
-    private EnemyState currentState = EnemyState.Idle;
+    public BossState currentState = BossState.Idle;
     private Animator animator;
     private float attackCooldownTimer = 0f;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        ChangeState(EnemyState.Idle);
+        ChangeState(BossState.Idle);
     }
 
     private void Update()
     {
-        if (currentState == EnemyState.Death) return;
-
         switch (currentState)
         {
-            case EnemyState.Idle:
+            case BossState.Idle:
                 HandleIdleState();
                 break;
-            case EnemyState.Attack:
+            case BossState.Attack:
                 HandleAttackState();
+                break;
+            case BossState.Death:
+                HandleDeathState();
                 break;
         }
 
         attackCooldownTimer -= Time.deltaTime;
-
-        if (currentHealth <= 0)
-        {
-            ChangeState(EnemyState.Death);
-        }
     }
 
     private void HandleIdleState()
     {
-        // Transition to attack state when cooldown is over
-        if (attackCooldownTimer <= 0)
+        if (attackCooldownTimer <= 0f)
         {
-            ChangeState(EnemyState.Attack);
+            ChangeState(BossState.Attack);
         }
     }
 
     private void HandleAttackState()
     {
-        PerformAttack();
-        attackCooldownTimer = attackCooldown; // Reset cooldown
-        ChangeState(EnemyState.Idle); // Return to Idle after attacking
+        animator.SetBool("Attack", true);
+        SpawnBullet();
+        attackCooldownTimer = attackCooldown;
+        animator.SetBool("Attack", false);
+        ChangeState(BossState.Idle); // Return to Idle after attacking
     }
 
-    private void PerformAttack()
+    private void SpawnBullet()
     {
         if (bulletPrefab != null && bulletSpawnPoint != null)
         {
@@ -69,26 +67,8 @@ public class EnemyController : MonoBehaviour
             //Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             //if (rb != null)
             //{
-            //    rb.velocity = Vector2.right * bulletSpeed; // Adjust direction as needed
+            //    rb.velocity = new Vector2(bulletSpeed, 0f); // Move bullet horizontally
             //}
-
-            //// Optional: Destroy the bullet after a certain time to avoid clutter
-            //Destroy(bullet, 5f);
-
-            animator.SetTrigger("Attack"); // Play attack animation
-        }
-    }
-
-    private void ChangeState(EnemyState newState)
-    {
-        if (currentState == newState) return;
-
-        currentState = newState;
-        animator.SetInteger("State", (int)newState);
-
-        if (newState == EnemyState.Death)
-        {
-            HandleDeathState();
         }
     }
 
@@ -96,22 +76,25 @@ public class EnemyController : MonoBehaviour
     {
         animator.SetTrigger("Death");
         Debug.Log("Boss is dead!");
-        Destroy(gameObject, 2f); // Destroy the boss after 2 seconds
+        Destroy(gameObject, 10f); // Destroy boss after 2 seconds
     }
 
-    public void TakeDamage(float damage)
+    private void ChangeState(BossState newState)
     {
-        currentHealth -= damage;
-        Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
-    }
+        if (currentState == newState) return;
 
+        currentState = newState;
+        animator.SetInteger("State", (int)newState);
+    }
+    private IEnumerator Attacking()
+    {
+        
+        yield return new WaitForSeconds(attackCooldown);
+        
+    }
     private void OnDrawGizmosSelected()
     {
-        // Visualize the bullet spawn point in the editor
-        if (bulletSpawnPoint != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(bulletSpawnPoint.position, 0.1f);
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(bulletSpawnPoint.position, 0.2f); // Visualize bullet spawn point
     }
 }

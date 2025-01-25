@@ -32,7 +32,7 @@ public class BubbleController : MonoBehaviour
     {
         currentGauge = maxGauge; // Initialize current gauge to maximum
         bubbleGaugeUI.InitializeGauge(maxGauge);
-        bubbleGaugeUI.UpdateGauge(currentGauge, maxGauge);
+        bubbleGaugeUI.UpdateGauge(currentGauge, 0, maxGauge);
     }
 
     private void Update()
@@ -75,6 +75,7 @@ public class BubbleController : MonoBehaviour
                 currentCharge++;
                 chargeTimer = 0f;
                 Debug.Log($"Charging: {currentCharge}");
+                bubbleGaugeUI.UpdateGauge(currentGauge, currentCharge, maxGauge);
             }
         }
 
@@ -84,7 +85,7 @@ public class BubbleController : MonoBehaviour
             {
                 ShootBubble(currentCharge);
                 currentGauge -= currentCharge;
-                bubbleGaugeUI.UpdateGauge(currentGauge, maxGauge); // Update the UI
+                bubbleGaugeUI.UpdateGauge(currentGauge, currentCharge,maxGauge); // Update the UI
                 Debug.Log($"Bubble shot! Remaining Gauge: {currentGauge}");
             }
             else
@@ -95,6 +96,7 @@ public class BubbleController : MonoBehaviour
             isCharging=false;
             currentCharge = 1;
             chargeTimer = 0f;
+            bubbleGaugeUI.UpdateGauge(currentGauge, 0, maxGauge);
         }
     }
 

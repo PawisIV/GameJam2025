@@ -1,46 +1,49 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BubbleMenu : MonoBehaviour
+public class BubbleMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Bubble Sprites")]
     public Sprite bubbleSprite; // The default bubble sprite
     public Sprite popSprite;    // The sprite to show when the bubble pops
+    public Sprite[] regenSprites; // Array of sprites for the regeneration animation (e.g., 4 frames)
 
     [Header("Shake Settings")]
-    public float shakeDuration = 0.2f; // Duration of the shake
-    public float shakeMagnitude = 10f; // Magnitude of the shake effect
+    public float shakeDuration = 0.2f;
+    public float shakeMagnitude = 10f;
+    public float hoverShakeMagnitude = 5f;
 
     [Header("Pop Settings")]
-    public float regenDelay = 1f; // Delay before the bubble regenerates
+    public float regenDelay = 1f; // Delay before starting regeneration
+    public float regenFrameDuration = 0.2f; // Duration of each frame in the regeneration animation
 
     [Header("Movement Settings")]
-    public float movementRadius = 50f; // Radius of the circular/oscillatory movement
-    public float movementSpeed = 1f;   // Speed of the movement
+    public float movementRadius = 50f;
+    public float movementSpeed = 1f;
 
     [Header("Scaling Settings")]
-    public float minScale = 0.8f;      // Minimum scale
-    public float maxScale = 1.2f;      // Maximum scale
-    public float scalingSpeed = 2f;    // Speed of scaling
+    public float minScale = 0.8f;
+    public float maxScale = 1.2f;
+    public float scalingSpeed = 2f;
 
     [Header("Rotation Settings")]
-    public float rotationSpeed = 50f;  // Speed of rotation (degrees per second)
-    public float maxRotationAngle = 15f; // Maximum angle to rotate left and right
+    public float rotationSpeed = 50f;
+    public float maxRotationAngle = 15f;
 
-    private Image bubbleImage;    // Reference to the Image component
-    private RectTransform bubbleRect; // Reference to the RectTransform
-    private int clickCount = 0;   // Track how many times the bubble is clicked
-    private bool isPopped = false; // Track if the bubble is in the popped state
-    private Vector3 startPosition; // Original position of the bubble
-    private float savedIndex;      // Used to offset movement for each bubble instance
-    private float currentRotationAngle = 0f; // Current angle for rotation
-    private float rotationDirection = 1f; // Direction of rotation (1 or -1)
+    private Image bubbleImage;
+    private RectTransform bubbleRect;
+    private int clickCount = 0;
+    private bool isPopped = false;
+    private Vector3 startPosition;
+    private float savedIndex;
+    private float currentRotationAngle = 0f;
+    private float rotationDirection = 1f;
+    private bool isHovering = false;
 
     private void Start()
     {
-        // Initialize components
         bubbleImage = GetComponent<Image>();
         bubbleRect = GetComponent<RectTransform>();
 
@@ -50,16 +53,10 @@ public class BubbleMenu : MonoBehaviour
             return;
         }
 
-        // Set the initial sprite
         bubbleImage.sprite = bubbleSprite;
 
-        // Save the original position for movement calculations
         startPosition = bubbleRect.localPosition;
-
-        // Save a random offset to make each bubble's movement unique
-        savedIndex = Random.Range(0f, Mathf.PI * 2f); // Randomize between 0 and 2π
-
-        // Set an initial random rotation direction
+        savedIndex = Random.Range(0f, Mathf.PI * 2f);
         rotationDirection = Random.Range(0, 2) == 0 ? 1f : -1f;
     }
 
@@ -70,17 +67,21 @@ public class BubbleMenu : MonoBehaviour
             MoveBubble();
             ScaleBubble();
             RotateBubble();
+
+            if (isHovering)
+            {
+                HoverShake();
+            }
         }
     }
 
     public void OnBubbleClick()
     {
-        if (isPopped)
-            return;
+        if (isPopped) return;
 
         clickCount++;
 
-        if (clickCount >= 3) // Adjust the number of clicks needed to pop the bubble
+        if (clickCount >= 3)
         {
             PopBubble();
         }
@@ -92,29 +93,25 @@ public class BubbleMenu : MonoBehaviour
 
     private void MoveBubble()
     {
-        // Calculate sine and cosine for circular/oscillatory movement
         float sine = Mathf.Sin(Time.time * movementSpeed + savedIndex);
         float cosine = Mathf.Cos(Time.time * movementSpeed + savedIndex);
 
-        // Update position using sine and cosine
         bubbleRect.localPosition = startPosition + new Vector3(sine * movementRadius, cosine * movementRadius, 0);
     }
 
     private void ScaleBubble()
     {
-        // Calculate scale using PingPong for smooth scaling up and down
         float scale = Mathf.Lerp(minScale, maxScale, Mathf.PingPong(Time.time * scalingSpeed, 1));
         bubbleRect.localScale = new Vector3(scale, scale, 1);
     }
 
     private void RotateBubble()
     {
-        // Rotate the bubble left and right within the maxRotationAngle range
         currentRotationAngle += rotationSpeed * Time.deltaTime * rotationDirection;
 
         if (Mathf.Abs(currentRotationAngle) >= maxRotationAngle)
         {
-            rotationDirection *= -1f; // Reverse direction when reaching the limit
+            rotationDirection *= -1f;
         }
 
         bubbleRect.localRotation = Quaternion.Euler(0, 0, currentRotationAngle);
@@ -123,7 +120,7 @@ public class BubbleMenu : MonoBehaviour
     private void PopBubble()
     {
         isPopped = true;
-        bubbleImage.sprite = popSprite; // Change to the pop sprite
+        bubbleImage.sprite = popSprite;
         StartCoroutine(RegenerateBubble());
     }
 
@@ -150,9 +147,34 @@ public class BubbleMenu : MonoBehaviour
     {
         yield return new WaitForSeconds(regenDelay);
 
-        // Reset the bubble to its original state
+        for (int i = 0; i < regenSprites.Length; i++)
+        {
+            bubbleImage.sprite = regenSprites[i];
+            yield return new WaitForSeconds(regenFrameDuration);
+        }
+
         bubbleImage.sprite = bubbleSprite;
         clickCount = 0;
         isPopped = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovering = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovering = false;
+        bubbleRect.localPosition = startPosition;
+    }
+
+    private void HoverShake()
+    {
+        Vector3 originalPosition = startPosition;
+        float offsetX = Random.Range(-hoverShakeMagnitude, hoverShakeMagnitude);
+        float offsetY = Random.Range(-hoverShakeMagnitude, hoverShakeMagnitude);
+
+        bubbleRect.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0);
     }
 }

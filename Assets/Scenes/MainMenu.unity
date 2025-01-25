@@ -378,7 +378,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1401872481}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: PlayGame
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -963,9 +963,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubbleSprite: {fileID: -2094236115, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
   popSprite: {fileID: -114715849, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
+  regenSprites:
+  - {fileID: -1344377747, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
+  - {fileID: 1797837152, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
+  - {fileID: -821337202, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
+  - {fileID: -2094236115, guid: 7bf1fb4ac28469349a66bc5b8314e2b1, type: 3}
   shakeDuration: 0.2
-  shakeMagnitude: 4
-  regenDelay: 1
+  shakeMagnitude: 5
+  hoverShakeMagnitude: 0.75
+  regenDelay: 1.3
+  regenFrameDuration: 0.4
   movementRadius: 5
   movementSpeed: 1
   minScale: 0.8

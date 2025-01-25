@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
-    [SerializeField] private float MaxHealth = 50f;
+    [SerializeField] public float MaxHealth = 50f;
     public float currentHealth;
     [SerializeField] private Timer timer;
     private bool isDead = false; // To prevent multiple calls to death logic

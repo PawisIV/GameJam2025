@@ -31,12 +31,15 @@ public class BossController : MonoBehaviour
         circleCollider = GetComponent<CircleCollider2D>();
         healthComponent = GetComponent<HealthComponent>();
         animator = GetComponent<Animator>();
+        animator.SetFloat("HealthPercentage", healthComponent.MaxHealth);
         originalPosition = transform.position;
         ChangeState(BossState.Idle);
     }
 
     private void Update()
     {
+        float healthPercentage = (healthComponent.currentHealth / healthComponent.MaxHealth) * 100f;
+        animator.SetFloat("HealthPercentage", healthPercentage);
         Debug.Log($"State changed to: {currentState}");
     }
     private void OnTriggerEnter2D(Collider2D other)

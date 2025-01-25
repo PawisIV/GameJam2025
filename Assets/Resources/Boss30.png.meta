@@ -137,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 252b14955733fad4f9e9411e2e85c5e3
-      internalID: 935642046
+      spriteID: f0e4d945d0e42224d95c07e173ff0667
+      internalID: 1790413016
       vertices: []
       indices: 
       edges: []
@@ -158,8 +158,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d9911a469ef03442a769fb12c198987
-      internalID: -2091325529
+      spriteID: 33fe955ac1262604db3a13dec37980bb
+      internalID: -286099146
       vertices: []
       indices: 
       edges: []
@@ -179,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f248ba98eabe80240a4608ef30dc7a68
-      internalID: 2005600438
+      spriteID: b8d5d653fd3ef1f4a9242b36ee9070f5
+      internalID: 1820605164
       vertices: []
       indices: 
       edges: []
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8da5213931ff9944c9a5261aa59cee7e
-      internalID: 26611853
+      spriteID: 60bb1ddfdc44fc14db9c6b8a4a19844d
+      internalID: 1748178294
       vertices: []
       indices: 
       edges: []
@@ -221,8 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecf073680e433f648afad660b4fc9fc8
-      internalID: -371521547
+      spriteID: 4241a690b14ab0e4e8a6a470d6e02c75
+      internalID: -209940796
       vertices: []
       indices: 
       edges: []
@@ -242,8 +242,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a34400ba58c86bb4883aaf8ea28ebcc8
-      internalID: 2011110029
+      spriteID: 64df9e3b80d30b24e8861efd4a0795b3
+      internalID: -1486891292
       vertices: []
       indices: 
       edges: []
@@ -259,12 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boss30_0: 935642046
-      Boss30_1: -2091325529
-      Boss30_2: 2005600438
-      Boss30_3: 26611853
-      Boss30_4: -371521547
-      Boss30_5: 2011110029
+      Boss30_0: 1790413016
+      Boss30_1: -286099146
+      Boss30_2: 1820605164
+      Boss30_3: 1748178294
+      Boss30_4: -209940796
+      Boss30_5: -1486891292
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

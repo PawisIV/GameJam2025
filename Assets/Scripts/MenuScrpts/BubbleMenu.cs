@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -123,7 +124,7 @@ public class BubbleMenu : MonoBehaviour
     {
         isPopped = true;
         bubbleImage.sprite = popSprite; // Change to the pop sprite
-        StartCoroutine(HandleRegeneration());
+        StartCoroutine(RegenerateBubble());
     }
 
     private IEnumerator Shake()
@@ -145,21 +146,12 @@ public class BubbleMenu : MonoBehaviour
         bubbleRect.localPosition = originalPosition;
     }
 
-    private IEnumerator HandleRegeneration()
+    private IEnumerator RegenerateBubble()
     {
-        // Hide the bubble
-        bubbleImage.enabled = false;
-        yield return new WaitForSeconds(0.5f);
-
-        // Play regen animation
-        // Assuming an Animator component is attached, trigger the animation here
-        // Example: GetComponent<Animator>().SetTrigger("Regen");
-
-        yield return new WaitForSeconds(regenDelay - 0.5f);
+        yield return new WaitForSeconds(regenDelay);
 
         // Reset the bubble to its original state
         bubbleImage.sprite = bubbleSprite;
-        bubbleImage.enabled = true;
         clickCount = 0;
         isPopped = false;
     }

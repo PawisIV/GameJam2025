@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19fcfb6bd50e034e8a1c1ce5c064128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 20
+  MaxHealth: 10
   currentHealth: 0
   timer: {fileID: 325611793}
   damageColor: {r: 0.7924528, g: 0.12335351, b: 0.12335351, a: 0.7921569}
@@ -659,6 +659,16 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7272751222315601700, guid: fbe7144f846de4e469a5e3065acbdde0, type: 3}
   bulletSpawnPoint: {fileID: 1337190497}
   bulletSpeed: 5
+  thornPrefab: {fileID: 8164162263119658001, guid: 8c54a796a5985bb48972e44c92ed4828, type: 3}
+  thornSignalPrefab: {fileID: 404907099742552558, guid: 397f9668a6215834e923d5194474a83b, type: 3}
+  summonPreviewDelay: 2
+  thornFreezeTime: 3
+  thornRiseSpeed: 4
+  thornDisappearSpeed: 4
+  minThorns: 3
+  maxThorns: 3
+  summonAreaMin: {x: -6.25, y: -6.2}
+  summonAreaMax: {x: -2, y: -6.2}
   currentState: 1
   isImmune: 0
 --- !u!95 &710705002

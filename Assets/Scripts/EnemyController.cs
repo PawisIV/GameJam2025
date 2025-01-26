@@ -11,6 +11,7 @@ public class BossController : MonoBehaviour
     public float chargeSpeed = 5f; // Speed of the charge
     public float chargeDelay = 0.5f; // Delay before charging
     public float returnSpeed = 2f; // Speed for returning to the original position
+    public GameObject deathPrefab;
 
     [Header("Bullet Settings")]
     public GameObject bulletPrefab; // Prefab for the bullet
@@ -19,6 +20,7 @@ public class BossController : MonoBehaviour
 
     public BossState currentState;
 
+    public bool isImmune = false;
     private CircleCollider2D circleCollider;
     private Animator animator;
     private Vector3 originalPosition; // The position to return to after charging
@@ -85,7 +87,6 @@ public class BossController : MonoBehaviour
     private IEnumerator PerformAttack()
     {
         animator.SetBool("Attack", true);
-
         // Spawn a bullet
         SpawnBullet();
 
@@ -104,6 +105,7 @@ public class BossController : MonoBehaviour
     private IEnumerator PerformCharge()
     {
         animator.SetTrigger("Charge");
+        isImmune = true;
 
         // Step back slightly
         Vector3 stepBackPosition = originalPosition + transform.right * 0.5f;
@@ -118,6 +120,7 @@ public class BossController : MonoBehaviour
 
         // Return to original position
         yield return MoveToPosition(originalPosition, returnSpeed);
+        isImmune = false;
 
         ChangeState(BossState.Idle); // Return to Idle after charge
     }
@@ -135,6 +138,8 @@ public class BossController : MonoBehaviour
     {
         animator.SetTrigger("Death");
         Debug.Log("Boss is dead!");
+        Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     public void ChangeState(BossState newState)

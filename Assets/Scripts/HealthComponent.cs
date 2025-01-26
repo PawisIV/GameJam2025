@@ -28,17 +28,20 @@ public class HealthComponent : MonoBehaviour
     {
         if (isDead) return; // Ignore further damage if already dead
 
-        currentHealth -= damage;
-        Debug.Log(currentHealth);
-
-        if (spriteRenderer != null)
+        if (!bossController.isImmune)
         {
-            StartCoroutine(FlashDamageColor());
+            currentHealth -= damage;
+            if (spriteRenderer != null)
+            {
+                StartCoroutine(FlashDamageColor());
+            }
         }
+        Debug.Log(currentHealth);
 
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
+            timer.StopTimer();
             bossController.cooldownCoroutine = null;
             bossController.ChangeState(BossController.BossState.Death);
         }

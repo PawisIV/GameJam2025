@@ -655,10 +655,12 @@ MonoBehaviour:
   chargeSpeed: 7
   chargeDelay: 2
   returnSpeed: 4
+  deathPrefab: {fileID: 9101870052270201051, guid: d559cc1c35b4ce440afec2bc69b67bd9, type: 3}
   bulletPrefab: {fileID: 7272751222315601700, guid: fbe7144f846de4e469a5e3065acbdde0, type: 3}
   bulletSpawnPoint: {fileID: 1337190497}
   bulletSpeed: 5
   currentState: 1
+  isImmune: 0
 --- !u!95 &710705002
 Animator:
   serializedVersion: 5

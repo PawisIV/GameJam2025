@@ -22,4 +22,8 @@ public class Menu : MonoBehaviour
     {
         Application.Quit();
     }
+    public void Main()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex-3);
+    }
 }

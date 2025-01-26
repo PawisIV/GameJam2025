@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    [Header("Audio Clips")]
+    public AudioClip bubbleHitBossSFX; // Sound when bubble hits the boss
+    public AudioClip bubbleDestroySFX; // Sound when bubble is destroyed
+    private AudioSource audioSource;
     private float damage;
     private float speed;
     private float size;
@@ -17,6 +21,8 @@ public class Bubble : MonoBehaviour
         // Set velocity (assuming 2D physics)
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * speed;
+
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -28,6 +34,7 @@ public class Bubble : MonoBehaviour
         { 
             HealthComponent health = other.GetComponent<HealthComponent>();
             health.TakeDamage(damage);
+            audioSource.PlayOneShot(bubbleHitBossSFX);
             Debug.Log($"Bubble hit {other.gameObject.name} with {damage} damage.");
             Destroy(gameObject);
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement; // For scene management
 
 public class HealthComponent : MonoBehaviour
 {
@@ -41,10 +42,23 @@ public class HealthComponent : MonoBehaviour
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
-            timer.StopTimer();
+            timer.StopTimer(); // Stop the timer when the boss dies
             bossController.cooldownCoroutine = null;
             bossController.ChangeState(BossController.BossState.Death);
+            StartCoroutine(HandleBossDeath());
         }
+    }
+
+    private IEnumerator HandleBossDeath()
+    {
+        yield return new WaitForSeconds(1f); // Wait for 2 seconds before transitioning
+
+        // Record the time the player took to defeat the boss
+        float timeToDefeatBoss = timer.GetElapsedTime(); // Assuming your Timer class has a GetElapsedTime method
+        PlayerPrefs.SetFloat("TimeToDefeatBoss", timeToDefeatBoss); // Save the time using PlayerPrefs
+
+        // Load the next scene (win scene)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2); // Load the next scene
     }
 
     private IEnumerator FlashDamageColor()

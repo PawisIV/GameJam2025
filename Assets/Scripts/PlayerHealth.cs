@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -127,7 +128,6 @@ public class PlayerHealth : MonoBehaviour
     private void HandleDeath()
     {
         Debug.Log("Player is dead!");
-
         if (timer != null)
         {
             timer.StopTimer();
@@ -138,6 +138,12 @@ public class PlayerHealth : MonoBehaviour
         }
         // Add any death logic here (respawn, game over screen, etc.)
         Destroy(gameObject); // Example: Destroy the player
+        LoadLossScene();
     }
+    private void LoadLossScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+2);
+    }
+
 
 }

@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BubbleSoul.unity
     guid: 42febcd32083e714e968b93f469485b4
+  - enabled: 1
+    path: Assets/Scenes/WinScene.unity
+    guid: 041f3c6516a962749999523254d241f4
+  - enabled: 1
+    path: Assets/Scenes/LossScene.unity
+    guid: 25643198989526348886379cf7313e2c
   m_configObjects: {}

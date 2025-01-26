@@ -28,8 +28,16 @@ public class BubbleController : MonoBehaviour
     private float chargeTimer = 0f; // Timer to track charging progress
     private float rechargeTimer = 0f; // Timer to track recharging progress
 
+    [Header("Audio Clips")]
+    public AudioClip bubbleShootSFX;
+    public AudioClip bubbleChargeSFX;
+
+    private AudioSource audioSource;
+
+
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         currentGauge = maxGauge; // Initialize current gauge to maximum
         bubbleGaugeUI.InitializeGauge(maxGauge);
         bubbleGaugeUI.UpdateGauge(currentGauge, 0, maxGauge);
@@ -70,6 +78,12 @@ public class BubbleController : MonoBehaviour
         {
             chargeTimer += Time.deltaTime;
             isCharging = true;
+            if (!audioSource.isPlaying)
+            {
+                audioSource.clip = bubbleChargeSFX;
+                audioSource.loop = true; // Set to true for looping charge sound
+                audioSource.Play();
+            }
             if (chargeTimer >= chargeTimePerGauge && currentCharge < maxCharge && currentCharge < currentGauge)
             {
                 currentCharge++;
@@ -81,6 +95,7 @@ public class BubbleController : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
+            audioSource.Stop();
             if (currentCharge <= currentGauge)
             {
                 ShootBubble(currentCharge);
@@ -120,6 +135,7 @@ public class BubbleController : MonoBehaviour
     {
         if (chargeLevel > 0 && chargeLevel <= bubbleStats.Length)
         {
+            audioSource.PlayOneShot(bubbleShootSFX);
             BubbleStats stats = bubbleStats[chargeLevel - 1];
 
             // Create a new GameObject for the bubble

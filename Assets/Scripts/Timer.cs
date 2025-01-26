@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System;
 
 public class Timer : MonoBehaviour
 {
@@ -20,9 +19,13 @@ public class Timer : MonoBehaviour
         timerText.text = $"{minutes:00}:{seconds:00}";
     }
 
-
     public void StopTimer()
     {
         isTimerRunning = false;
+    }
+
+    public float GetElapsedTime()
+    {
+        return timer; // Return the current timer value in seconds
     }
 }

@@ -586,8 +586,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 710704995}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07, y: -2.84, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.070007324, y: -2.8400269, z: 0}
   m_LocalScale: {x: 4.009398, y: 3.4992683, z: 0.7347392}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -659,6 +659,16 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7272751222315601700, guid: fbe7144f846de4e469a5e3065acbdde0, type: 3}
   bulletSpawnPoint: {fileID: 1337190497}
   bulletSpeed: 5
+  thornPrefab: {fileID: 8164162263119658001, guid: 8c54a796a5985bb48972e44c92ed4828, type: 3}
+  thornSignalPrefab: {fileID: 404907099742552558, guid: 397f9668a6215834e923d5194474a83b, type: 3}
+  summonPreviewDelay: 2
+  thornFreezeTime: 3
+  thornRiseSpeed: 4
+  thornDisappearSpeed: 4
+  minThorns: 3
+  maxThorns: 3
+  summonAreaMin: {x: -6.25, y: -6.2}
+  summonAreaMax: {x: -2, y: -6.2}
   currentState: 1
   isImmune: 0
 --- !u!95 &710705002
@@ -1158,12 +1168,43 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337190496}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.022661623, w: 0.9997432}
-  m_LocalPosition: {x: -0.13, y: -0.104, z: -0.020911722}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.13, y: 0, z: -0.020911722}
   m_LocalScale: {x: 0.24947914, y: 0.28568852, z: 1.3610272}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 710704998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1400020266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1400020267}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1400020267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400020266}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.47, y: -3.95, z: -0.0029077036}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1439195042
 GameObject:
@@ -1296,7 +1337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 36.2, y: 113.5}
+  m_AnchoredPosition: {x: 36.19995, y: 113.5}
   m_SizeDelta: {x: -346, y: -259}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1681424043
@@ -1902,3 +1943,4 @@ SceneRoots:
   - {fileID: 325611794}
   - {fileID: 1230773938}
   - {fileID: 245563748}
+  - {fileID: 1400020267}

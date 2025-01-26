@@ -54,14 +54,7 @@ public class BossController : MonoBehaviour
     {
         float healthPercentage = (healthComponent.currentHealth / healthComponent.MaxHealth) * 100f;
         animator.SetFloat("HealthPercentage", healthPercentage);
-        if(healthPercentage < 65 && healthPercentage >= 35)
-        {
-            attackCooldown = 3.5f;
-        }
-        else if (healthPercentage < 30)
-        {
-            attackCooldown = 2;
-        }
+        ChangeStat(healthPercentage);
         Debug.Log($"State changed to: {currentState}");
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -70,6 +63,23 @@ public class BossController : MonoBehaviour
         {
             PlayerHealth health = other.GetComponent<PlayerHealth>();
             health.TakeDamage(1);
+        }
+    }
+    private void ChangeStat(float healthPercentage)
+    {
+        if (healthPercentage < 65 && healthPercentage >= 35)
+        {
+            attackCooldown = 3.5f;
+            bulletSpeed = 6;
+            chargeDelay = 1.5f;
+            summonPreviewDelay = 1.5f;
+        }
+        else if (healthPercentage < 30)
+        {
+            attackCooldown = 2;
+            bulletSpeed = 7;
+            chargeDelay = 1f;
+            summonPreviewDelay = 1f;
         }
     }
     private void HandleIdleState()
@@ -111,16 +121,17 @@ public class BossController : MonoBehaviour
     private IEnumerator PerformAttack()
     {
         animator.SetBool("Attack", true);
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.8f);
         // Spawn a bullet
         SpawnBullet();
 
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.8f);
         SpawnBullet();
 
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.8f);
         SpawnBullet();
-
+        yield return new WaitForSeconds(0.8f);
+        SpawnBullet();
         yield return new WaitForSeconds(0.5f);// Brief animation delay (adjust as needed)
 
         animator.SetBool("Attack", false);

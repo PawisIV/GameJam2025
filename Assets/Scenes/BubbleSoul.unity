@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19fcfb6bd50e034e8a1c1ce5c064128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 20
+  MaxHealth: 300
   currentHealth: 0
   timer: {fileID: 325611793}
   damageColor: {r: 0.7924528, g: 0.12335351, b: 0.12335351, a: 0.7921569}

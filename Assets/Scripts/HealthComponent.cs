@@ -1,16 +1,16 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; // For scene management
+using UnityEngine.SceneManagement;
 
 public class HealthComponent : MonoBehaviour
 {
     [SerializeField] public float MaxHealth = 50f;
     public float currentHealth;
-    [SerializeField] private Timer timer;
+    [SerializeField] private Timer timer; // Reference to your timer
     private bool isDead = false; // To prevent multiple calls to death logic
-    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer
-    [SerializeField] private Color damageColor = Color.red; // Color to flash when damaged
-    [SerializeField] private float colorFlashDuration = 0.2f; // Duration of the flash
+    private SpriteRenderer spriteRenderer;
+    [SerializeField] private Color damageColor = Color.red; // Flash color
+    [SerializeField] private float colorFlashDuration = 0.2f; // Flash duration
     private BossController bossController;
 
     private void Awake()
@@ -32,6 +32,8 @@ public class HealthComponent : MonoBehaviour
         if (!bossController.isImmune)
         {
             currentHealth -= damage;
+
+            // Flash damage color if SpriteRenderer is available
             if (spriteRenderer != null)
             {
                 StartCoroutine(FlashDamageColor());
@@ -43,7 +45,7 @@ public class HealthComponent : MonoBehaviour
         {
             isDead = true;
             timer.StopTimer(); // Stop the timer when the boss dies
-            bossController.cooldownCoroutine = null;
+            bossController.cooldownCoroutine = null; // Cancel boss cooldowns
             bossController.ChangeState(BossController.BossState.Death);
             StartCoroutine(HandleBossDeath());
         }
@@ -51,14 +53,14 @@ public class HealthComponent : MonoBehaviour
 
     private IEnumerator HandleBossDeath()
     {
-        yield return new WaitForSeconds(1f); // Wait for 2 seconds before transitioning
+        yield return new WaitForSeconds(1f); // Wait for 1 second (death animation or effects)
 
-        // Record the time the player took to defeat the boss
-        float timeToDefeatBoss = timer.GetElapsedTime(); // Assuming your Timer class has a GetElapsedTime method
-        PlayerPrefs.SetFloat("TimeToDefeatBoss", timeToDefeatBoss); // Save the time using PlayerPrefs
+        // Record the time taken to defeat the boss
+        float timeToDefeatBoss = timer.GetElapsedTime(); // Assuming Timer class has GetElapsedTime
+        PlayerPrefs.SetFloat("TimeToDefeatBoss", timeToDefeatBoss); // Save defeat time using PlayerPrefs
 
-        // Load the next scene (win scene)
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2); // Load the next scene
+        // Load the win score scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // Ensure the next scene is the win score scene
     }
 
     private IEnumerator FlashDamageColor()
